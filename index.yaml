@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  dive-backend:
+  - apiVersion: v2
+    appVersion: dev
+    created: "2026-03-21T13:12:14.987922211Z"
+    description: Dive backend service with embedded frontend assets
+    digest: 0a7b9615a8705644813b2d46aa414ef24e80c98e751b41196167b93e5dd5eaf3
+    name: dive-backend
+    type: application
+    urls:
+    - https://github.com/jLemmings/helm-charts/releases/download/dive-backend-0.1.0/dive-backend-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-03-21T13:12:14.987927851Z"
