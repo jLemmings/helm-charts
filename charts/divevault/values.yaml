@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/jlemmings/divevault-backend
+  repository: ghcr.io/jlemmings/divevault
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -30,7 +30,7 @@ ingress:
   className: ""
   annotations: {}
   hosts:
-    - host: dive.example.com
+    - host: divevault.example.com
       paths:
         - path: /
           pathType: Prefix
@@ -42,7 +42,7 @@ traefikIngressRoute:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dive.example.com`)
+    - match: Host(`divevault.example.com`)
       kind: Rule
       middlewares: []
       services:
