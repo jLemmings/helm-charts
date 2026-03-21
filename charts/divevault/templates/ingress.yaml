@@ -5,9 +5,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "dive-backend.fullname" . }}
+  name: {{ include "divevault.fullname" . }}
   labels:
-    {{- include "dive-backend.labels" . | nindent 4 }}
+    {{- include "divevault.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -26,7 +26,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "dive-backend.fullname" $ }}
+                name: {{ include "divevault.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

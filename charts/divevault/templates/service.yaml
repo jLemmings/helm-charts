@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "dive-backend.fullname" . }}
+  name: {{ include "divevault.fullname" . }}
   labels:
-    {{- include "dive-backend.labels" . | nindent 4 }}
+    {{- include "divevault.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   selector:
-    {{- include "dive-backend.selectorLabels" . | nindent 4 }}
+    {{- include "divevault.selectorLabels" . | nindent 4 }}
   ports:
     - name: http
       port: {{ .Values.service.port }}

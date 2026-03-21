@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dive-backend.fullname" . }}
+  name: {{ include "divevault.fullname" . }}
   labels:
-    {{- include "dive-backend.labels" . | nindent 4 }}
+    {{- include "divevault.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "dive-backend.selectorLabels" . | nindent 6 }}
+      {{- include "divevault.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "dive-backend.selectorLabels" . | nindent 8 }}
+        {{- include "divevault.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "dive-backend.serviceAccountName" . }}
+      serviceAccountName: {{ include "divevault.serviceAccountName" . }}
       containers:
         - name: backend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -23,7 +23,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dive-backend.databaseSecretName" . }}
+                  name: {{ include "divevault.databaseSecretName" . }}
                   key: {{ .Values.database.secretKey }}
             - name: HOST
               value: "0.0.0.0"
