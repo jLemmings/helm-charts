@@ -19,6 +19,11 @@ spec:
         - name: backend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if or .Values.auth.existingSecret .Values.auth.clerkSecretKey .Values.auth.clerkJwtKey }}
+          envFrom:
+            - secretRef:
+                name: {{ include "divevault.authSecretName" . }}
+          {{- end }}
           env:
             - name: DATABASE_URL
               valueFrom:
@@ -33,6 +38,20 @@ spec:
               value: {{ .Values.env.corsOrigin | quote }}
             - name: LOG_LEVEL
               value: {{ .Values.env.logLevel | quote }}
+            - name: CLERK_API_URL
+              value: {{ .Values.env.clerkApiUrl | quote }}
+            - name: CLERK_FRONTEND_API_URL
+              value: {{ .Values.env.clerkFrontendApiUrl | quote }}
+            - name: CLERK_JWKS_URL
+              value: {{ .Values.env.clerkJwksUrl | quote }}
+            - name: CLERK_AUTHORIZED_PARTIES
+              value: {{ .Values.env.clerkAuthorizedParties | quote }}
+            - name: CLERK_API_KEY_SCOPES
+              value: {{ .Values.env.clerkApiKeyScopes | quote }}
+            - name: CLI_AUTH_REQUEST_TTL
+              value: {{ .Values.env.cliAuthRequestTtl | quote }}
+            - name: CLI_AUTH_TOKEN_TTL
+              value: {{ .Values.env.cliAuthTokenTtl | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

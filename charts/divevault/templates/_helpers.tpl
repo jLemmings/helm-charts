@@ -45,3 +45,13 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-db" (include "divevault.fullname" .) -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "divevault.authSecretName" -}}
+{{- if .Values.auth.existingSecret -}}
+{{- .Values.auth.existingSecret -}}
+{{- else if .Values.auth.secretName -}}
+{{- .Values.auth.secretName -}}
+{{- else -}}
+{{- printf "%s-auth" (include "divevault.fullname" .) -}}
+{{- end -}}
+{{- end -}}
