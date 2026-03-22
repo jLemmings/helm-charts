@@ -19,7 +19,7 @@ spec:
         - name: backend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if or .Values.auth.existingSecret .Values.auth.clerkSecretKey .Values.auth.clerkJwtKey }}
+          {{- if or .Values.auth.existingSecret .Values.auth.clerkSecretKey .Values.auth.clerkJwtKey .Values.auth.viteClerkPublishableKey }}
           envFrom:
             - secretRef:
                 name: {{ include "divevault.authSecretName" . }}

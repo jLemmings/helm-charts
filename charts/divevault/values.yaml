@@ -28,16 +28,18 @@ env:
   cliAuthRequestTtl: 600
   cliAuthTokenTtl: 1800
 
-# Secret keys should be named CLERK_SECRET_KEY and CLERK_JWT_KEY when using auth.existingSecret.
+# Secret keys should be named CLERK_SECRET_KEY, CLERK_JWT_KEY, and
+# VITE_CLERK_PUBLISHABLE_KEY when using auth.existingSecret.
 auth:
   existingSecret: ""
   secretName: ""
   clerkSecretKey: ""
   clerkJwtKey: ""
+  viteClerkPublishableKey: ""
 
-# The divevault .env.example also includes VITE_CLERK_PUBLISHABLE_KEY, BACKEND_URL,
-# and BACKEND_AUTH_TOKEN. Those are not runtime env vars consumed by the deployed
-# backend container, so they are not templated by this chart.
+# BACKEND_URL and BACKEND_AUTH_TOKEN from the repository .env.example are not
+# consumed by the shipped frontend or backend container entrypoint today, so
+# this chart does not template them.
 
 serviceAccount:
   create: false
