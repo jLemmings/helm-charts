@@ -6,11 +6,20 @@ metadata:
     {{- include "divevault.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       {{- include "divevault.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/database-secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        checksum/auth-secret: {{ include (print $.Template.BasePath "/auth-secret.yaml") . | sha256sum }}
       labels:
         {{- include "divevault.selectorLabels" . | nindent 8 }}
     spec:
@@ -19,8 +28,10 @@ spec:
         - name: backend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if or .Values.auth.existingSecret .Values.auth.clerkSecretKey .Values.auth.clerkJwtKey .Values.auth.viteClerkPublishableKey }}
           envFrom:
+            - configMapRef:
+                name: {{ include "divevault.configMapName" . }}
+          {{- if or .Values.auth.existingSecret .Values.auth.jwtSecret }}
             - secretRef:
                 name: {{ include "divevault.authSecretName" . }}
           {{- end }}
@@ -30,28 +41,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "divevault.databaseSecretName" . }}
                   key: {{ .Values.database.secretKey }}
-            - name: HOST
-              value: "0.0.0.0"
-            - name: PORT
-              value: {{ .Values.service.port | quote }}
-            - name: CORS_ORIGIN
-              value: {{ .Values.env.corsOrigin | quote }}
-            - name: LOG_LEVEL
-              value: {{ .Values.env.logLevel | quote }}
-            - name: CLERK_API_URL
-              value: {{ .Values.env.clerkApiUrl | quote }}
-            - name: CLERK_FRONTEND_API_URL
-              value: {{ .Values.env.clerkFrontendApiUrl | quote }}
-            - name: CLERK_JWKS_URL
-              value: {{ .Values.env.clerkJwksUrl | quote }}
-            - name: CLERK_AUTHORIZED_PARTIES
-              value: {{ .Values.env.clerkAuthorizedParties | quote }}
-            - name: CLERK_API_KEY_SCOPES
-              value: {{ .Values.env.clerkApiKeyScopes | quote }}
-            - name: CLI_AUTH_REQUEST_TTL
-              value: {{ .Values.env.cliAuthRequestTtl | quote }}
-            - name: CLI_AUTH_TOKEN_TTL
-              value: {{ .Values.env.cliAuthTokenTtl | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

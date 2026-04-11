@@ -9,6 +9,22 @@ service:
   type: ClusterIP
   port: 8000
 
+app:
+  corsOrigin: "*"
+  logLevel: INFO
+
+  limits:
+    maxJsonBodyBytes: 1048576
+    maxBackupImportBytes: 26214400
+    maxListLimit: 200
+
+  rateLimit:
+    windowSeconds: 60
+    cliRequestPerWindow: 30
+    cliApprovePerWindow: 15
+    backupImportPerWindow: 10
+    diveUploadPerWindow: 120
+
 resources: {}
 
 database:
@@ -16,30 +32,26 @@ database:
   secretName: ""
   secretKey: database-url
   url: postgresql://dive:dive@postgres:5432/dive
+  startupMigrations: enabled
+  startupRetries: 5
+  startupRetryDelaySeconds: 2
+  connectTimeoutSeconds: 5
 
-env:
-  corsOrigin: "*"
-  logLevel: INFO
-  clerkApiUrl: https://api.clerk.com
-  clerkFrontendApiUrl: ""
-  clerkJwksUrl: ""
-  clerkAuthorizedParties: ""
-  clerkApiKeyScopes: ""
-  cliAuthRequestTtl: 600
-  cliAuthTokenTtl: 1800
-
-# Secret keys should be named CLERK_SECRET_KEY, CLERK_JWT_KEY, and
-# VITE_CLERK_PUBLISHABLE_KEY when using auth.existingSecret.
+# Secret keys should be named AUTH_JWT_SECRET when using auth.existingSecret.
 auth:
   existingSecret: ""
   secretName: ""
-  clerkSecretKey: ""
-  clerkJwtKey: ""
-  viteClerkPublishableKey: ""
+  jwtSecret: ""
+  jwtIssuer: divevault.local
+  jwtAudience: divevault.app
+  tokenTtlSeconds: 43200
+  cliRequestTtl: 600
+  cliTokenTtl: 1800
 
-# BACKEND_URL and BACKEND_AUTH_TOKEN from the repository .env.example are not
-# consumed by the shipped frontend or backend container entrypoint today, so
-# this chart does not template them.
+nominatim:
+  baseUrl: https://nominatim.openstreetmap.org
+  userAgent: DiveVault/1.0
+  email: ""
 
 serviceAccount:
   create: false
