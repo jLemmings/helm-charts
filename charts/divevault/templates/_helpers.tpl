@@ -55,3 +55,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-auth" (include "divevault.fullname" .) -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "divevault.configMapName" -}}
+{{- printf "%s-config" (include "divevault.fullname" .) -}}
+{{- end -}}
