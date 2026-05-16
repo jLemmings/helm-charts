@@ -12,6 +12,8 @@ service:
 app:
   corsOrigin: "*"
   logLevel: INFO
+  metrics:
+    enabled: disabled
 
   limits:
     maxJsonBodyBytes: 1048576
