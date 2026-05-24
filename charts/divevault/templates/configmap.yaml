@@ -9,6 +9,7 @@ data:
   PORT: {{ .Values.service.port | quote }}
   CORS_ORIGIN: {{ .Values.app.corsOrigin | quote }}
   LOG_LEVEL: {{ .Values.app.logLevel | quote }}
+  DEMO_MODE: {{ .Values.app.demoMode | quote }}
   METRICS_ENABLED: {{ .Values.app.metrics.enabled | quote }}
   AUTH_JWT_ISSUER: {{ .Values.auth.jwtIssuer | quote }}
   AUTH_JWT_AUDIENCE: {{ .Values.auth.jwtAudience | quote }}
