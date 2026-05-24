@@ -13,6 +13,16 @@ entries:
     version: 0.1.0
   divevault:
   - apiVersion: v2
+    appVersion: v0.2.5
+    created: "2026-05-24T13:36:50.674369157Z"
+    description: Dive backend service with embedded frontend assets
+    digest: 94b872964a5a6c18058f0031ff8e16991c4351b37f9b0415eb6ce16255c74425
+    name: divevault
+    type: application
+    urls:
+    - https://github.com/jLemmings/helm-charts/releases/download/divevault-0.2.5/divevault-0.2.5.tgz
+    version: 0.2.5
+  - apiVersion: v2
     appVersion: dev
     created: "2026-05-24T09:56:31.436078975Z"
     description: Dive backend service with embedded frontend assets
@@ -92,4 +102,4 @@ entries:
     urls:
     - https://github.com/jLemmings/helm-charts/releases/download/divevault-0.1.0/divevault-0.1.0.tgz
     version: 0.1.0
-generated: "2026-05-24T09:56:31.436115603Z"
+generated: "2026-05-24T13:36:50.674407894Z"
