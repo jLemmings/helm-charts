@@ -72,6 +72,7 @@ ingress:
 
 traefikIngressRoute:
   enabled: false
+  className: ""
   annotations: {}
   entryPoints:
     - websecure

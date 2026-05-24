@@ -2,17 +2,23 @@
 {{- fail "Only one of ingress.enabled or traefikIngressRoute.enabled may be true" }}
 {{- end }}
 {{- if and .Values.traefikIngressRoute.enabled (not .Values.ingress.enabled) }}
+{{- $configuredAnnotations := default dict .Values.traefikIngressRoute.annotations }}
+{{- $ingressRouteAnnotations := omit $configuredAnnotations "kubernetes.io/ingress.class" }}
+{{- $ingressRouteClassName := default (index $configuredAnnotations "kubernetes.io/ingress.class") .Values.traefikIngressRoute.className }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "divevault.fullname" . }}
   labels:
     {{- include "divevault.labels" . | nindent 4 }}
-  {{- with .Values.traefikIngressRoute.annotations }}
+  {{- with $ingressRouteAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if $ingressRouteClassName }}
+  ingressClassName: {{ $ingressRouteClassName }}
+  {{- end }}
   entryPoints:
     {{- toYaml .Values.traefikIngressRoute.entryPoints | nindent 4 }}
   routes:

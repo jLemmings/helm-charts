@@ -2,5 +2,5 @@ apiVersion: v2
 name: divevault
 description: Dive backend service with embedded frontend assets
 type: application
-version: 0.2.1
+version: 0.2.2
 appVersion: "dev"
