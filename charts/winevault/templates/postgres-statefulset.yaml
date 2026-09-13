@@ -1,3 +1,4 @@
+{{- if .Values.postgres.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -26,18 +27,18 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "winevault.fullname" . }}-postgres
-                  key: POSTGRES_DB
+                  name: {{ default (printf "%s-postgres" (include "winevault.fullname" .)) .Values.postgres.existingSecret.name | quote }}
+                  key: {{ .Values.postgres.existingSecret.databaseKey | quote }}
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "winevault.fullname" . }}-postgres
-                  key: POSTGRES_USER
+                  name: {{ default (printf "%s-postgres" (include "winevault.fullname" .)) .Values.postgres.existingSecret.name | quote }}
+                  key: {{ .Values.postgres.existingSecret.userKey | quote }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "winevault.fullname" . }}-postgres
-                  key: POSTGRES_PASSWORD
+                  name: {{ default (printf "%s-postgres" (include "winevault.fullname" .)) .Values.postgres.existingSecret.name | quote }}
+                  key: {{ .Values.postgres.existingSecret.passwordKey | quote }}
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
@@ -62,3 +63,4 @@ spec:
         resources:
           requests:
             storage: {{ .Values.postgres.storage.size }}
+{{- end }}

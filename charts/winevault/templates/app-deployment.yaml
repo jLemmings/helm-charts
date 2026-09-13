@@ -23,7 +23,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DATABASE_URL
+              {{- if .Values.app.env.databaseURLFromSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.env.databaseURLFromSecret.name | quote }}
+                  key: {{ .Values.app.env.databaseURLFromSecret.key | quote }}
+              {{- else }}
               value: {{ .Values.app.env.databaseURL | quote }}
+              {{- end }}
             - name: HTTP_ADDR
               value: {{ .Values.app.env.httpAddr | quote }}
             - name: AUTH_COOKIE_SECURE

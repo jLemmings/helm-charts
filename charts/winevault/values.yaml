@@ -13,6 +13,9 @@ app:
     authCookieSecure: "true"
     httpAddr: ":8080"
     databaseURL: "postgres://winevault:winevault_dev@winevault-postgres:5432/winevault?sslmode=disable"
+    databaseURLFromSecret:
+      name: ""
+      key: DATABASE_URL
   resources:
     requests:
       cpu: 100m
@@ -25,11 +28,17 @@ app:
   affinity: {}
 
 postgres:
+  enabled: true
   image: postgres:17-alpine
   user: winevault
   password: winevault_dev
   database: winevault
   port: 5432
+  existingSecret:
+    name: ""
+    userKey: POSTGRES_USER
+    passwordKey: POSTGRES_PASSWORD
+    databaseKey: POSTGRES_DB
   storage:
     size: 8Gi
     className: ""
