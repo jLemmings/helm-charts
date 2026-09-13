@@ -29,7 +29,7 @@ app:
 
 postgres:
   enabled: true
-  image: postgres:17-alpine
+  image: postgres:18-alpine
   user: winevault
   password: winevault_dev
   database: winevault
