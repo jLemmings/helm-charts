@@ -5,7 +5,16 @@ on:
       - master
 jobs:
   release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        chart:
+          - divevault
+          - winevault
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -19,5 +28,8 @@ jobs:
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts/${{ matrix.chart }}
+          skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
