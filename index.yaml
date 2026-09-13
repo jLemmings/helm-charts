@@ -142,4 +142,15 @@ entries:
     urls:
     - https://github.com/jLemmings/helm-charts/releases/download/divevault-0.1.0/divevault-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-23T06:40:12.633377725Z"
+  winevault:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2026-09-13T16:48:38.128865066Z"
+    description: WineVault cellar application and PostgreSQL backing store
+    digest: 6a1856710b2cb0af4f168fd62c789534733e59e3cdee90e050f8a61c9f6fc9f3
+    name: winevault
+    type: application
+    urls:
+    - https://github.com/jLemmings/helm-charts/releases/download/winevault-0.0.1/winevault-0.0.1.tgz
+    version: 0.0.1
+generated: "2026-09-13T16:48:38.128907926Z"
