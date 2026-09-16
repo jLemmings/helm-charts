@@ -33,20 +33,21 @@ spec:
             - name: AUTH_COOKIE_SECURE
               value: {{ .Values.app.env.authCookieSecure | quote }}
             - name: PORT
-              value: "3000"
+              value: {{ .Values.service.port | quote }}
           ports:
             - name: http
-              containerPort: 3000
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
           readinessProbe:
             httpGet:
               path: /api/health
-              port: 3000
+              port: http
             initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/health
-              port: 3000
+              port: http
             initialDelaySeconds: 30
             periodSeconds: 15
           resources:

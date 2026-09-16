@@ -7,7 +7,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 3000
+  port: 8000
 
 app:
   env:
