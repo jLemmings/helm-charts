@@ -145,6 +145,16 @@ entries:
   winevault:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2026-09-16T19:58:37.162515141Z"
+    description: WineVault cellar application and PostgreSQL backing store
+    digest: 341bf9892dd7cccc9f404c211cde92739b61d4c84bcbe5489774105c6275c596
+    name: winevault
+    type: application
+    urls:
+    - https://github.com/jLemmings/helm-charts/releases/download/winevault-0.0.6/winevault-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2026-09-16T19:46:34.233387356Z"
     description: WineVault cellar application and PostgreSQL backing store
     digest: b3ab81095e2b7d820ea55c22b50a14b1c0bbcec095f23a965dc62c9853ccafdd
@@ -193,4 +203,4 @@ entries:
     urls:
     - https://github.com/jLemmings/helm-charts/releases/download/winevault-0.0.1/winevault-0.0.1.tgz
     version: 0.0.1
-generated: "2026-09-16T19:46:34.233440056Z"
+generated: "2026-09-16T19:58:37.16261916Z"
