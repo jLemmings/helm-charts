@@ -38,17 +38,17 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: /api/health
-              port: http
-            initialDelaySeconds: 15
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /api/health
-              port: http
-            initialDelaySeconds: 30
-            periodSeconds: 15
+          # readinessProbe:
+          #   httpGet:
+          #     path: /api/health
+          #     port: http
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /api/health
+          #     port: http
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 15
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}
