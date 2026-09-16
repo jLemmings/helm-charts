@@ -18,3 +18,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{- define "winevault.databaseSecretName" -}}
+{{- if .Values.database.existingSecret -}}
+{{- .Values.database.existingSecret -}}
+{{- else if .Values.database.secretName -}}
+{{- .Values.database.secretName -}}
+{{- else -}}
+{{- printf "%s-db" (include "winevault.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/* An existing application database Secret means the bundled database is not needed. */}}
+{{- define "winevault.postgresEnabled" -}}
+{{- if and .Values.postgres.enabled (not .Values.database.existingSecret) -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}

@@ -1,4 +1,4 @@
-{{- if .Values.postgres.enabled }}
+{{- if eq (include "winevault.postgresEnabled" .) "true" }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
