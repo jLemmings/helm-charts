@@ -9,14 +9,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "winevault.name" . }}
-      app.kubernetes.io/component: app
+      {{- include "winevault.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
         checksum/database-secret: {{ include (print $.Template.BasePath "/database-secret.yaml") . | sha256sum }}
       labels:
-        app.kubernetes.io/name: {{ include "winevault.name" . }}
+        {{- include "winevault.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: app
     spec:
       containers:

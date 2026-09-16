@@ -5,10 +5,11 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+service:
+  type: ClusterIP
+  port: 3000
+
 app:
-  service:
-    type: ClusterIP
-    port: 3000
   env:
     authCookieSecure: "true"
     httpAddr: ":8080"

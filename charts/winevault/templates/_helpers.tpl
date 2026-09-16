@@ -19,6 +19,11 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
+{{- define "winevault.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "winevault.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
 {{- define "winevault.databaseSecretName" -}}
 {{- if .Values.database.existingSecret -}}
 {{- .Values.database.existingSecret -}}
