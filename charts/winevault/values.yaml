@@ -59,6 +59,22 @@ ingress:
   hosts: []
   tls: []
 
+traefikIngressRoute:
+  enabled: false
+  className: ""
+  annotations: {}
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`winevault.example.com`)
+      kind: Rule
+      middlewares: []
+      services:
+        - name: ""
+          port: null
+          scheme: ""
+  tls: {}
+
 serviceAccount:
   create: true
   name: ""
