@@ -60,6 +60,12 @@ openai:
   existingSecret: ""
   secretKey: OPENAI_API_KEY
 
+grapeminds:
+  # Kubernetes Secret managed separately, for example by External Secrets Operator.
+  # Leave empty to omit GRAPEMINDS_API_KEY and disable wine information enrichment.
+  existingSecret: ""
+  secretKey: GRAPEMINDS_API_KEY
+
 database:
   existingSecret: ""
   secretName: ""

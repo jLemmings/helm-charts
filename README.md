@@ -80,6 +80,54 @@ lookup still work. After key rotation has synced, restart the WineVault Deployme
 to reload the environment (for the default deployment name:
 `kubectl rollout restart deployment/winevault -n <namespace>`).
 
+## WineVault GrapeMinds key with External Secrets
+
+WineVault reads `GRAPEMINDS_API_KEY` at startup for wine information enrichment.
+The log status `not_configured` means that key was missing or blank in the running
+backend. Configure these Helm values:
+
+```yaml
+grapeminds:
+  existingSecret: winevault-grapeminds
+  secretKey: GRAPEMINDS_API_KEY
+```
+
+With External Secrets Operator and your store already configured, apply this
+manifest in the WineVault namespace. Replace the store name and remote secret
+identifier with your own:
+
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: winevault-grapeminds
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: my-secret-store
+    kind: ClusterSecretStore
+  target:
+    name: winevault-grapeminds
+    creationPolicy: Owner
+  data:
+    - secretKey: GRAPEMINDS_API_KEY
+      remoteRef:
+        key: winevault/grapeminds-api-key
+```
+
+The remote value should be the API key; add `remoteRef.property` if the key is
+stored in a JSON field. For a namespaced store, use `kind: SecretStore` in the
+same namespace. The chart only references the generated Secret. You can also
+use a shared Secret with OpenAI by setting both `existingSecret` values to its
+name and selecting the appropriate keys.
+
+Wait for the ExternalSecret to become Ready, then upgrade the release with these
+values. A configured Secret or key that is missing prevents container startup.
+Leave `grapeminds.existingSecret` empty to omit the environment variable.
+After a key change has synced, restart WineVault to reload it:
+`kubectl rollout restart deployment/winevault -n <namespace>` (default deployment
+name). Retry the affected wine's information fetch in the UI after restart.
+
 ## WineVault health probes
 
 The probes match the [v0.0.3 authentication routes](https://github.com/jLemmings/WineVault/blob/v0.0.3/backend/auth.go)

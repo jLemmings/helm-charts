@@ -30,6 +30,13 @@ spec:
                   name: {{ .Values.openai.existingSecret | quote }}
                   key: {{ required "openai.secretKey must be set when openai.existingSecret is configured" .Values.openai.secretKey | quote }}
             {{- end }}
+            {{- if .Values.grapeminds.existingSecret }}
+            - name: GRAPEMINDS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.grapeminds.existingSecret | quote }}
+                  key: {{ required "grapeminds.secretKey must be set when grapeminds.existingSecret is configured" .Values.grapeminds.secretKey | quote }}
+            {{- end }}
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
