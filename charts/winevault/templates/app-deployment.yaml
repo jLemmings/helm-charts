@@ -23,6 +23,13 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{- if .Values.openai.existingSecret }}
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.openai.existingSecret | quote }}
+                  key: {{ required "openai.secretKey must be set when openai.existingSecret is configured" .Values.openai.secretKey | quote }}
+            {{- end }}
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -38,17 +45,17 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          # readinessProbe:
-          #   httpGet:
-          #     path: /api/health
-          #     port: http
-          #   initialDelaySeconds: 15
-          #   periodSeconds: 10
-          # livenessProbe:
-          #   httpGet:
-          #     path: /api/health
-          #     port: http
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 15
+          {{- with .Values.app.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.app.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.app.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}

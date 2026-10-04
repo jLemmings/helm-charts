@@ -13,6 +13,36 @@ app:
   env:
     authCookieSecure: "true"
     httpAddr: ":8080"
+  # Public endpoint checks Nuxt -> Go -> PostgreSQL, including before owner setup.
+  startupProbe:
+    httpGet:
+      path: /api/auth/status
+      port: http
+    periodSeconds: 5
+    timeoutSeconds: 6
+    failureThreshold: 30
+  readinessProbe:
+    httpGet:
+      path: /api/auth/status
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 6
+    failureThreshold: 3
+  # v0.0.3 rejects unauthenticated health requests before querying PostgreSQL.
+  # Expect 401 through Nuxt to check both processes without depending on the DB.
+  # curl and /bin/sh are included in the upstream image. Do not add curl --fail.
+  livenessProbe:
+    exec:
+      command:
+        - /bin/sh
+        - -ec
+        - >-
+          status=$(curl --noproxy '*' --silent --show-error --output /dev/null
+          --write-out '%{http_code}' --max-time 4
+          "http://127.0.0.1:${PORT}/api/health") && test "$status" = 401
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 3
   resources:
     requests:
       cpu: 100m
@@ -23,6 +53,12 @@ app:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+openai:
+  # Kubernetes Secret managed separately, for example by External Secrets Operator.
+  # Leave empty to omit OPENAI_API_KEY and disable label-photo recognition.
+  existingSecret: ""
+  secretKey: OPENAI_API_KEY
 
 database:
   existingSecret: ""
